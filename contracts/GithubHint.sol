@@ -16,6 +16,7 @@
 
 pragma solidity ^0.4.6;
 
+
 contract GithubHint {
 	struct Entry {
 		string accountSlashRepo;
@@ -23,17 +24,21 @@ contract GithubHint {
 		address owner;
 	}
 
-	modifier when_edit_allowed(bytes32 _content) { if (entries[_content].owner != 0 && entries[_content].owner != msg.sender) return; _; }
+	modifier whenEditAllowed(bytes32 _content) {
+		if (entries[_content].owner != 0 && entries[_content].owner != msg.sender)
+			return;
+		_;
+	}
 
-	function hint(bytes32 _content, string _accountSlashRepo, bytes20 _commit) when_edit_allowed(_content) {
+	function hint(bytes32 _content, string _accountSlashRepo, bytes20 _commit) whenEditAllowed(_content) public {
 		entries[_content] = Entry(_accountSlashRepo, _commit, msg.sender);
 	}
 
-	function hintURL(bytes32 _content, string _url) when_edit_allowed(_content) {
+	function hintURL(bytes32 _content, string _url) whenEditAllowed(_content) public {
 		entries[_content] = Entry(_url, 0, msg.sender);
 	}
 
-	function unhint(bytes32 _content) when_edit_allowed(_content) {
+	function unhint(bytes32 _content) whenEditAllowed(_content) public {
 		delete entries[_content];
 	}
 
