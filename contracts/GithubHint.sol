@@ -27,8 +27,7 @@ contract GithubHint {
 	mapping (bytes32 => Entry) public entries;
 
 	modifier whenEditAllowed(bytes32 _content) {
-		if (entries[_content].owner != 0 && entries[_content].owner != msg.sender)
-			return;
+		require(entries[_content].owner == 0 || entries[_content].owner == msg.sender);
 		_;
 	}
 
