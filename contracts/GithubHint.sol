@@ -24,23 +24,31 @@ contract GithubHint {
 		address owner;
 	}
 
+	mapping (bytes32 => Entry) public entries;
+
 	modifier whenEditAllowed(bytes32 _content) {
-		if (entries[_content].owner != 0 && entries[_content].owner != msg.sender)
-			return;
+		require(entries[_content].owner == 0 || entries[_content].owner == msg.sender);
 		_;
 	}
 
-	function hint(bytes32 _content, string _accountSlashRepo, bytes20 _commit) whenEditAllowed(_content) public {
+	function hint(bytes32 _content, string _accountSlashRepo, bytes20 _commit)
+		public
+		whenEditAllowed(_content)
+	{
 		entries[_content] = Entry(_accountSlashRepo, _commit, msg.sender);
 	}
 
-	function hintURL(bytes32 _content, string _url) whenEditAllowed(_content) public {
+	function hintURL(bytes32 _content, string _url)
+		public
+		whenEditAllowed(_content)
+	{
 		entries[_content] = Entry(_url, 0, msg.sender);
 	}
 
-	function unhint(bytes32 _content) whenEditAllowed(_content) public {
+	function unhint(bytes32 _content)
+		public
+		whenEditAllowed(_content)
+	{
 		delete entries[_content];
 	}
-
-	mapping (bytes32 => Entry) public entries;
 }
