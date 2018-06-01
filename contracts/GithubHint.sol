@@ -32,21 +32,21 @@ contract GithubHint {
 	}
 
 	function hint(bytes32 _content, string _accountSlashRepo, bytes20 _commit)
-		public
+		external
 		whenEditAllowed(_content)
 	{
 		entries[_content] = Entry(_accountSlashRepo, _commit, msg.sender);
 	}
 
 	function hintURL(bytes32 _content, string _url)
-		public
+		external
 		whenEditAllowed(_content)
 	{
 		entries[_content] = Entry(_url, 0, msg.sender);
 	}
 
 	function unhint(bytes32 _content)
-		public
+		external
 		whenEditAllowed(_content)
 	{
 		delete entries[_content];
