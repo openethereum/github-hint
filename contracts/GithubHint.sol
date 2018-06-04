@@ -14,7 +14,7 @@
 //! See the License for the specific language governing permissions and
 //! limitations under the License.
 
-pragma solidity ^0.4.6;
+pragma solidity ^0.4.22;
 
 
 contract GithubHint {
@@ -32,21 +32,21 @@ contract GithubHint {
 	}
 
 	function hint(bytes32 _content, string _accountSlashRepo, bytes20 _commit)
-		public
+		external
 		whenEditAllowed(_content)
 	{
 		entries[_content] = Entry(_accountSlashRepo, _commit, msg.sender);
 	}
 
 	function hintURL(bytes32 _content, string _url)
-		public
+		external
 		whenEditAllowed(_content)
 	{
 		entries[_content] = Entry(_url, 0, msg.sender);
 	}
 
 	function unhint(bytes32 _content)
-		public
+		external
 		whenEditAllowed(_content)
 	{
 		delete entries[_content];
